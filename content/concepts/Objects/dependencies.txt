@@ -1,4 +1,4 @@
-tag: Functions
-reason: An Object is a structure containing functions and variables
+tag: functions
+reason: an object is a structure containing functions and variables
 
-tag: Variable_Mutation
+tag: variable_mutation

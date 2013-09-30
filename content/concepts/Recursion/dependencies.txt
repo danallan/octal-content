@@ -1,2 +1,2 @@
-tag: Functions
-reason: Recursion is conceptually dependent on functions calling themselves
+tag: functions
+reason: recursion is conceptually dependent on functions calling themselves

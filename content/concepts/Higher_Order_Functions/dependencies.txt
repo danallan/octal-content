@@ -1,2 +1,2 @@
-tag: Functions
+tag: functions
 

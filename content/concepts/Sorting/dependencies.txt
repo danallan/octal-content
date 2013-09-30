@@ -1,5 +1,5 @@
-tag: Recursion
+tag: recursion
 
-tag: Higher_Order_Functions
+tag: higher_order_functions
 
-tag: Arrays
+tag: arrays

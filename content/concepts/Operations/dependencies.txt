@@ -1,2 +1,2 @@
-tag: Primitives
-reason: Operations require a knowledge of operands
+tag: primitives
+reason: operations require a knowledge of operands

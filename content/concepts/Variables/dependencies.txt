@@ -1,2 +1,2 @@
-tag: Operations
-reason: Assignment is an operation
+tag: operations
+reason: assignment is an operation
