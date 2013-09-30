@@ -1,2 +1,0 @@
-tag: arrays
-reason: data structures give structure to collections of data

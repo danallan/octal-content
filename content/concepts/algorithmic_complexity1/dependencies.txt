@@ -1,3 +1,0 @@
-tag: data_structures
-
-tag: sorting
