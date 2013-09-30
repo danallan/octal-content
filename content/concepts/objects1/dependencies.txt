@@ -1,0 +1,4 @@
+tag: functions
+reason: an object is a structure containing functions and variables
+
+tag: variable_mutation

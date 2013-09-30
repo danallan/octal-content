@@ -1,0 +1,5 @@
+tag: variables
+reason: variables contribute to an understanding of parameterized functions
+
+tag: types
+reason: domain and range require an understanding of input and output type

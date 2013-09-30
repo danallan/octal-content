@@ -1,0 +1,5 @@
+tag: variables
+reason: conditionals are often used to check the state of variables
+
+tag: procedural_execution
+reason: understanding the flow of code is essential to understanding a branch

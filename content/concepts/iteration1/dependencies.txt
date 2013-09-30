@@ -1,0 +1,5 @@
+tag: variable_mutation
+reason: the mutation of iterator variables is an essential part of iteration
+
+tag: conditionals
+reason: fulfilling a condition is often the means by which an iterative loop knows to end
