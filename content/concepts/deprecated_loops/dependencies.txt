@@ -1,2 +1,0 @@
-tag: procedural execution
-reason: understanding the flow of code is essential to underst
