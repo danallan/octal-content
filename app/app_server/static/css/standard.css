@@ -1,0 +1,270 @@
+/* -----------------------------------*/
+/* ---------->>> GLOBAL <<<-----------*/
+/* -----------------------------------*/
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    font-size: 1.0em;
+}
+
+h1 {
+    margin-top: 1em;
+}
+
+p {
+   padding: 0.1em 0;
+}
+
+input{
+    font-size: 90%;
+    font-family: "Lucida Grande" arial sans-serif;   
+}
+
+/* ----------------------------------------------------*/
+/* ---------->>> Pure CSS Customizations <<<-----------*/
+/* ----------------------------------------------------*/
+.header-menu{
+    font-size: 100%;
+    margin: 0;
+    line-height: 1em;
+    color: #ECECEC;
+}
+
+.header-menu ul li{
+    display: inline-block;
+}
+
+.header-menu header-menu >ul{
+    height: 1.8em;
+}
+
+.header-menu a{
+    color: #EFEFEF;
+    font-size: 0.9em;
+    text-decoration: none;
+    padding: 0 1em;
+    line-height: 1.8em;
+    display: inline-block;
+}
+
+.header-menu a:hover{
+    text-decoration: underline;
+}
+
+.header-menu  a.heleft{
+    padding-right: 0.2em;
+}
+
+.header-menu  a.heright{
+    padding-left: 0.2em;
+}
+
+.header-pull-right {
+    display: table;
+}
+.header-pull-right > ul, .header-menu > ul{
+    display: table-cell;
+    vertical-align: middle;
+}
+.header-pull-right > ul {
+    text-align: right;
+}
+
+.header-title{
+    display: table-cell;
+    min-width: 25em;
+    vertical-align: middle;
+}
+
+#mobile-header {
+    display: none;
+}
+
+#mobile-header button{
+    border: none;
+    background: #666;
+    padding: 0.2em 1em;
+    color: #ECECEC;
+    border: 1px #302C2C solid;
+}
+
+.sidr ul li.sidr-class-join-line{
+    display: none;
+}
+
+.sidr-class-home-nav{
+    display: none;
+}
+
+#sidr-id-header-search-input{
+    display: none;
+}
+
+#sidr-id-mobile-header{
+    display: none;
+}
+
+#responsive-menu-button{
+    font-size: 100%;
+}
+
+
+/* ---------------------------------------------------*/
+/* ---------->>> General Functional Styles<<<---------*/
+/* ---------------------------------------------------*/
+
+.external-link{
+    font-size: 1em;
+    color: #068519;
+    text-decoration: none;
+}
+.external-link:hover{
+    color: #041F63;
+    text-decoration: underline;
+}
+
+
+.internal-link, .focus-link{
+    color: #A01F70;
+    text-decoration: none;
+}
+.internal-link:hover, .focus-link:hover{
+    text-decoration: underline;
+    color: #690259;
+}
+
+.missing-link{
+    color: #BBBB70;
+    text-decoration: none;
+}
+.missing-link:hover{
+    color: #666620;
+    text-decoration: underline;
+}
+
+a.expand-collapse-link{
+    font-size: 0.8em;
+    color:#190797;
+}
+a.expand-collapse-link:hover{
+    color: #190797;
+}
+
+.placeholder
+{
+  color: #aaa;
+}
+
+.underline{
+    text-decoration: underline;
+}
+
+/* ---------------------------------------------------*/
+/* ---------->>> Layout Styles <<<--------------------*/
+/* ---------------------------------------------------*/
+.noscript-alert{
+    width: 100%;
+    height: 100%;
+    background-color: #EAF05B;
+    line-height: 1.5em;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+#header {
+    background: #333;
+    z-index: 10;
+    position: relative;
+    width: 100%;
+}
+
+#meta-heading-search{
+    padding: 0;
+}
+
+.meta-home-link{
+    margin-left: 0.2em;
+    padding: 0.5em 0 0.5em 110px;
+    background-image: url('/static/images/metacademy-toolbar-icon1.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    height: 1.7em;
+}
+
+a.home-nav{
+    display: inline;
+    padding: 0;
+}
+
+
+#header-search-input, user-form-field input{
+    outline: none;    
+    padding: 0.2ex 0.4ex;
+    /* margin-top: 0.3ex; */
+    border: 1px solid #999999;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+    background-color: white;
+    border-radius: 2px;
+    -moz-box-sizing: border-box; /* Firefox */
+    -webkit-box-sizing: border-box; /* Safari */
+    -ms-box-sizing: border-box; /* IE */
+    box-sizing: border-box;
+    width: 15em;
+}
+#header-search-input:focus, .user-form-field input:focus{
+    border-color: #501644;
+    box-shadow: inset 3px 3px 4px rgba(0,0,0,0.075);
+}
+
+#header-search-input:hover, .user-form-field input:hover{
+    box-shadow: inset 3px 3px 4px rgba(0,0,0,0.075);
+}
+
+#main {
+    width: 100%;
+    height: 100%;
+    background: white;
+    color: #333;
+}
+
+@media only screen and (max-width:999px){
+    #header-search-input{
+        width: 10em;
+    }
+    .header-title{
+        min-width: 19em;
+    }
+}
+
+@media only screen and (max-width:899px){
+    #mobile-header {
+        display: table-cell;
+        vertical-align: middle;
+        direction: rtl;
+        padding-right: 1em;
+    }
+
+    #header > ul{
+        display: none;
+    }
+    #header{
+        height: 1.85em;
+    }
+}
+
+@media only screen and (max-width: 767px){
+    .meta-home-link{
+        padding: 0.5em 0 0.5em 35px;
+        background-image: url('/static/images/metacademy-toolbar-icon1-crop.png');
+        background-repeat: no-repeat;
+        background-position: left center;
+        height: 1.7em;
+    }
+    .header-title{
+        min-width: 0;
+    }
+}

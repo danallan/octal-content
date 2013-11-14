@@ -1,0 +1,57 @@
+define(["backbone", "underscore", "jquery", "octal/utils/utils"], function(Backbone, _, $, Utils){
+var QuizView = (function() {
+  var pvt = {};
+  pvt.viewConsts = {
+    viewId: "quiz"
+  };
+  pvt.isRendered = false;
+  
+  
+  return Backbone.View.extend({
+
+    tagName:  'div',
+
+    // Cache the template function for a single item.
+    todoTpl: _.template( "An example template" ),
+  
+    isRendered: function(){
+      return pvt.isRendered;
+    },
+
+    events: {
+      'dblclick label': 'edit',
+      'keypress .edit': 'updateOnEnter',
+      'blur .edit':   'close'
+    },
+
+    // Re-render the title of the todo item.
+    render: function() {
+      $(this.el).html('LOOK IT\'S A QUIZ\n<button> submit </button>');//this.template( this.model.toJSON() ) );
+      pvt.isRendered = true;
+      return this;
+    },
+
+    edit: function() {
+      // executed when todo label is double clicked
+    },
+
+    close: function() {
+      // executed when todo loses focus
+    },
+
+    updateOnEnter: function( e ) {
+      // executed on each keypress when in todo edit mode,
+      // but we'll wait for enter to get in action
+    }
+  
+
+  });
+  })();
+
+var quizView = new QuizView();
+
+// log reference to a DOM element that corresponds to the view instance
+
+console.log('quiz view loaded'); // logs 
+return QuizView;
+});

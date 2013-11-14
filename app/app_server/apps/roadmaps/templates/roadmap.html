@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+Metacademy - {{ roadmap.title|escape }}
+{% endblock %}
+
+{% block extra-css %}
+<link rel="stylesheet" href="{% static "css/roadmap.css" %}"> </rel>
+{% endblock %}
+
+{% block main %}
+
+<div class="container">
+  {% include "roadmap-content.html" %}
+</div>
+
+{% endblock %}
+

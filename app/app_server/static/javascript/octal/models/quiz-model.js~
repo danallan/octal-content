@@ -1,0 +1,29 @@
+/*
+ This file contains the model for questions, retrieved from the server
+ */
+
+define(["backbone", "underscore"], function(Backbone, _) {
+
+				var questionModel = Backbone.Model.extend({
+								
+								defaults: function() {
+												return {
+																qid: "", //question id
+																h: "", //html of the question
+																t: "", //type of the question
+																a: null //array including correct answer and perhaps distractors
+												}
+								}
+								initialize: function() {
+												this.on('change:a', function(){
+																console.log('- the answer value for this model has been changed');
+												});
+								}
+						
+				});
+				var questionCollection = Backbone.Collection.extend({
+								model: questionModel,
+
+				});
+	}
+				

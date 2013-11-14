@@ -1,0 +1,188 @@
+{% load staticfiles %}
+{% load compress %}
+{% load i18n lazysignup_tags %}
+<!DOCTYPE html>
+<html>
+  <head>
+    {% block head %}
+    {% block meta %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    {% block meta-viewport %}
+      <meta name="viewport" content="initial-scale=1">
+    {% endblock %}
+
+    <meta name="description" content="Metacademy - a free open source platform for efficient, personalized learning.">
+    {% endblock %}
+
+    {% block favicon %}
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "images/favicon.ico"%}">
+    {% endblock %}
+    
+    {% block targetblank %}
+
+    {% endblock %}
+
+    {% compress css %}
+
+    {% block css %}
+    <link rel="stylesheet" href="{% static "css/jquery.sidr.dark.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/reset.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/standard.css" %}"/>
+
+    {% endblock %}
+
+    {% block extra-css %}
+    {% endblock %}
+
+    {% endcompress %}
+
+    {% block hackscript %}
+    <script type="text/javascript">
+      // current hack for multiple development environments will change for server
+      window.CONTENT_SERVER = "{{ content_server }}";
+      window.STATIC_PATH = "{% static "" %}";
+      window.GRAPH_CONCEPT_PATH = "{% url 'graphs:concepts' %}";
+      window.PRODUCTION = window.location.href.match('metacademy') !== null;
+      window.CSRF_TOKEN = "{{ csrf_token }}";
+    </script>
+    {% endblock %}
+
+    {% block iedetect %}
+    
+    <script type="text/javascript">
+      if(!document.createElement('canvas').getContext){ 
+      alert("Sorry, Metacademy does not work for your browser" +
+      " (IE < 10 or early mobile browsers). Have you considered Firefox/Chrome/Opera instead?");
+                                                                                              }
+                                                                                              </script>
+    {% endblock %}
+
+    <title> {% block title %}Metacademy{% endblock %}</title>
+
+    {% endblock %}
+  </head>
+
+  <body>
+    {% block noscript %}
+    <noscript>
+      <div class="noscript-alert">
+        <p>
+          It looks like you have javascript disabled.
+        </p>
+        <p>
+          You must have javascript enabled on a modern browser in order to use metacademy.org
+        </p>
+      </div>
+    </noscript>
+    {% endblock %}
+    
+    {% block body %}
+
+    <div class="header-pull-right header-menu" id="header">
+    {% block header-search %}
+      <div id="meta-heading-search" class="header-title"> <a class="home-nav" href="/" target="_self"><span class="meta-home-link">&nbsp;</span></a> <input type="text" id="header-search-input" class="searchbox" placeholder="search" value="{% block search-text %}{% endblock %}" autocapitalize="off" tabindex="1"> </div>
+    {% endblock %}
+      <ul>
+        <li>
+          <a href="/list" target="_self">Concept list</a>
+        </li>
+        <li>
+          <a href="/roadmaps" target="_self">Roadmap list</a>
+        </li>
+        <li>
+          <a href="/feedback" target="_self">Feedback/Questions</a>
+        </li>
+        <li>
+          <a href="/about" target="_self">About</a>
+        </li>
+        {% if user.is_authenticated and not user|is_lazy_user %}
+        <li>
+          <a target="_self" href="{% url 'user:user_main' %}" class="heleft">{{ user.username }}</a>
+        </li>
+        
+        <li class="join-line">
+          &#124;
+        </li>
+        
+        <li>
+          <a target="_self" href="{% url 'user:logout' %}" class="heright">Sign out</a>
+        </li>
+
+        {% else %}
+        <li>
+          <a target="_self" href="{% url 'user:login' %}" class="heleft">Sign in</a>
+        </li>
+        
+        <li class="join-line">
+          &#124;
+        </li>
+        
+        <li>
+          <a target="_self" href="{% url 'user:register' %}" class="heright">Sign up</a>
+        </li>
+        {% endif %}
+      </ul>
+
+      <div id="mobile-header">
+        <button id="responsive-menu-button">Menu</button>
+      </div>
+</div>
+
+<div id="main">
+  {% block main %}
+
+  {% endblock %}
+</div>
+
+{% compress js %}
+{% block jscript %}
+{% include "load-jquery-snippet.html" %}
+<script src="{% static "javascript/lib/jquery.sidr.min.js" %}"></script>
+<script src="{% static "javascript/gen-utils.js" %}"></script>
+<script>
+  if (window.PRODUCTION){
+    $("body").on("mousedown", ".external-link", function(evt){
+      if(window._paq){
+        window._paq.push(['trackLink', evt.currentTarget.href, "link"]);
+      }
+    });
+    $(window).on("hashchange", function() {
+      if(window._paq){
+        window._paq.push(['trackPageView', window.location.hash]);
+      }
+    });
+  }
+</script>
+{% endblock %}
+
+{% block jscript-extend %}
+
+{% endblock %}
+
+{% endcompress %}
+
+{% endblock %}
+
+<script>
+  // piwik server-side tracking
+  if (window.PRODUCTION){
+  var _paq = _paq || [];
+  _paq.push(['trackPageView', window.location.href.split('/').pop()]);
+  (function() {
+  var u=(("https:" == document.location.protocol) ? "https" : "http") + "://metacademy.org/analytics/piwik//";
+  _paq.push(['setTrackerUrl', u+'piwik.php']);
+  _paq.push(['setSiteId', 1]);
+  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+  g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+    // log internal and external views (piwik won't track if the client has donottrack set)
+  }
+</script>
+</body>
+</html>          
+
+
+
+
+

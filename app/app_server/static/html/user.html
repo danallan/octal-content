@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block extra-css %}
+<link rel="stylesheet" href="{% static "css/userpage.css" %}"/>
+{% endblock %}
+
+{% block main %}
+<div class="user-profile">
+  <h1>
+    {{user.username}}
+  </h1>
+  <hr>
+
+  <section id="account-section">
+    <h2>
+      Your Account
+    </h2>
+    <div class="user-account-info user-subsec">
+      <ul>
+        <li> username (public): {{user.username}}</li>
+        <li> email (not public): {{user.email}}</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="graphs-section">
+    <h2>
+      Your Graphs
+    </h2>
+    <div class="user-graphs list-wrapper user-subsec">
+      <span class="no-content-message"> you have not yet created any graphs (metacademy currently does not have this functionality)</span>
+    </div>
+  </section>
+
+  <section id="contribs-section">
+    <h2>
+      Your Contributions
+    </h2>
+    <div class="user-graphs list-wrapper user-subsec">
+      <span class="no-content-message"> you have not yet contributed any content to metacademy (metacademy does not currently have this functionality)</span>
+    </div>
+  </section>
+
+  <section id="lc-section">
+    <h2>
+      Your Starred Concepts
+    </h2>
+    <div class="starred-concepts list-wrapper user-subsec">
+      {% if sconcepts %}
+      <ul>
+        {% for entry in sconcepts %}
+        <li class="list-concepts-li">
+          <h3 class="list-concepts-title">
+            <a class="list-concepts-link internal-link" href="{% url 'graphs:concepts' %}{{entry.tag}}"> {{ entry.title }} </a>
+          </h3>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <span class="no-content-message"> you have not yet starred any concepts on metacademy </span>
+      {% endif %}
+    </div>
+  </section>
+
+  <section id="lc-section">
+    <h2>
+      Your Learned Concepts
+    </h2>
+    <div class="learned-concepts list-wrapper user-subsec">
+      {% if lconcepts %}
+      <ul>
+        {% for entry in lconcepts %}
+        <li class="list-concepts-li">
+          <h3 class="list-concepts-title">
+            <a class="list-concepts-link internal-link" href="{% url 'graphs:concepts' %}{{entry.tag}}"> {{ entry.title }} </a>
+          </h3>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <span class="no-content-message"> you have not yet learned any concepts on metacademy </span>
+      {% endif %}
+    </div>
+  </section>
+
+</div>
+{% endblock %}
+

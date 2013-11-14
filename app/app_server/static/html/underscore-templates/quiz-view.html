@@ -1,0 +1,25 @@
+<script type="text/template" id="quiz-view-template">
+	
+	<div class="quiz">
+	  <h1><strong>Recursion</strong></h1>
+	  <hr />
+		<br />
+	  <div class="question-content"> <%= h %> </div>
+		<br />
+	  <div>
+    	<form class="answer">
+				<% if(t === "1") { %>
+				  <% for (var answer in a) { %>
+
+				  <label class ='answer-choice'><input type='radio' name='answer'  value='<%= a[answer] %>'><%= a[answer] %></label>
+
+				  <% } %>
+				<% } %>
+    	</form>
+    	<br />
+			<br />
+    	<input type="submit" value="Submit" class="submit-button">
+	  </div>
+	</div>
+</script>
+
