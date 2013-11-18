@@ -1,7 +1,12 @@
 <script type="text/template" id="quiz-view-template">
 	
 	<div class="quiz">
-	  <h1><strong>Placeholder</strong></h1>
+	  <h1 class="title"><strong><% if(concept) { %>
+				<%= concept %>
+    <%} else {%>
+        Placeholder
+    <% } %>
+    </h1>
 	  <hr />
 		<br />
 	  <div class="question-content"> <%= h %> </div>

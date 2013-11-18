@@ -32,3 +32,6 @@
 .topic-list {
     margin: 25px 5px 25px 5px;
 }
+
+.title {
+		text-transform:capitalize;

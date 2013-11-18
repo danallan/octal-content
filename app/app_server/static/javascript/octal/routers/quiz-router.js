@@ -20,7 +20,7 @@ define(["backbone", "jquery", "octal/models/quiz-model", "octal/views/quiz-view"
             var thisRoute = this,
 						qviewId = pvt.qViewId;
 						console.log("you have selected the concept: " + concept);
-						var questionModel = new QuestionModel();
+						var questionModel = new QuestionModel({concept: concept});
 						thisRoute.qview = new QuizView({model: questionModel});
 						thisRoute.qview.render();
 						$("#quiz-wrapper").html(thisRoute.qview.$el).show();
