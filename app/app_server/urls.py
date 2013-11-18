@@ -23,9 +23,10 @@ urlpatterns = patterns('',
                        url(r'^$', TemplateView.as_view(template_name="landing.html")),
                        url(r'^(?i)search$', search_inst, name="haystack_search"),
                        url(r'^(?i)list$', TemplateView.as_view(template_name="concept-list.html")),
+                       url(r'^(?i)quiz$', TemplateView.as_view(template_name="quiz-container.html")),
                        url(r'^(?i)concepts/((?P<anything>.*))', RedirectView.as_view(url="/graphs/concepts/%(anything)s", query_string=True), name='concepts'),
-
-
+                       
+                       
                        url(r'^(?i)octal/', include('apps.octal.urls', namespace="graphs") ),
                        url(r'^(?i)graphs/', include('apps.graph.urls', namespace="graphs") ),
                        url(r'^user/', include('apps.user_management.urls', namespace='user') ),

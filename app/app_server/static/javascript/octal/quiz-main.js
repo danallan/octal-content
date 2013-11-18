@@ -53,12 +53,10 @@ if (window.PRODUCTION){
 }
 
 // agfk app & gen-utils
-requirejs(["backbone", "agfk/utils/utils", "agfk/routers/router", "gen-utils","agfk/models/aux-model", "jquery", "btouch", "sidr"], function(Backbone, Utils, AppRouter, GenPageUtils, AuxModel, $){
+requirejs(["backbone", "octal/routers/quiz-router", "jquery", "btouch", "sidr"], function(Backbone,  QuizRouter, $, GenPageUtils, AuxModel ){
   "use strict";
 
-  // initialize global auxData
-  window.agfkGlobals.auxModel = new AuxModel(window.agfkGlobals.auxData, {parse: true});
-
+  
   // shim for CSRF token integration with backbone and django
   var oldSync = Backbone.sync;
   Backbone.sync = function(method, model, options){
@@ -70,10 +68,10 @@ requirejs(["backbone", "agfk/utils/utils", "agfk/routers/router", "gen-utils","a
     return oldSync(method, model, options);
   };
   
-  GenPageUtils.prep();
+  //GenPageUtils.prep();
 
   // automatically resize window when viewport changes
-  Utils.scaleWindowSize("header", "main");
+  //Utils.scaleWindowSize("header", "main");
 
   $("body").on("mousedown", ".external-link", function(evt){
     if(window._paq){
@@ -85,14 +83,8 @@ requirejs(["backbone", "agfk/utils/utils", "agfk/routers/router", "gen-utils","a
       window._paq.push(['trackPageView', window.location.hash]);
     }
   });
-  // track clicking between learning and explore view
-  $("body").on("click", ".toggle-lc-button", function(evt){
-    if(window._paq){
-      window._paq.push(['trackPageView', evt.currentTarget.id]);
-    }
-  });
 
   // start the AGFK app
-  var appRouter = new AppRouter();
+  var quizRouter = new QuizRouter();
   Backbone.history.start();
 });

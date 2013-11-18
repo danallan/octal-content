@@ -1,3 +1,4 @@
+
 define(["backbone", "underscore", "jquery", "octal/utils/utils"], function(Backbone, _, $, Utils){
 
 		
@@ -24,9 +25,6 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils"], function(Backb
 						},
 
 						events: {
-								'dblclick label': 'edit',
-								'keypress .edit': 'updateOnEnter',
-								'blur .edit':   'close',
 								'click .submit-button': 'submit'
 						},
 
@@ -37,8 +35,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils"], function(Backb
 								var h = _.clone(thisModel.toJSON());
 								
 								thisView.$el.html(thisView.template(h));
-								$('#header').remove();
-								$('#apptools').remove();
+							  
 								
 								pvt.isRendered = true;
 								return this;
@@ -50,17 +47,12 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils"], function(Backb
 								//TODO: build model to submit, actually submit to server
 						},
 						edit: function() {
-								// executed when todo label is double clicked
+								
 						},
 
 						close: function() {
-								// executed when todo loses focus
+								//$('#header').css('display', 'block');
 						},
-
-						updateOnEnter: function( e ) {
-								// executed on each keypress when in todo edit mode,
-								// but we'll wait for enter to get in action
-						}
 						
 
 				});

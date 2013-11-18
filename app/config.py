@@ -1,6 +1,6 @@
 from os import path
 
-META_TOP_LEVEL = path.realpath('..')
+META_TOP_LEVEL = path.realpath('../../../metacademy')
 CONTENT_PATH = path.join(META_TOP_LEVEL, 'metacademy-content')
 
 # change this path to specify a different local database directory
