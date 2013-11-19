@@ -249,8 +249,8 @@ define(["backbone", "jquery", "octal/views/explore-view", "octal/views/learning-
           aux.setDepRoot(nodeId);
 
           var userModel = new UserData(window.agfkGlobals.userInitData, {parse: true}),
-              graphModel = new GraphModel(),
-						questionModel = new QuestionModel();
+            graphModel = new GraphModel(),
+						questionModel = new QuestionModel({concept: window.location.href.split('/').pop().split('#').shift()});
           aux.setUserModel(userModel);
           thisRoute.userModel = userModel;
           thisRoute.graphModel = graphModel;

@@ -16,9 +16,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils"], function(Backb
 						template: _.template(document.getElementById( pvt.viewConsts.templateId).innerHTML),
 
 						tagName:  'div',
-
-						// Cache the template function for a single item.
-						todoTpl: _.template( "An example template" ),
+            
 						
 						isRendered: function(){
 								return pvt.isRendered;
@@ -32,6 +30,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils"], function(Backb
 						render: function() {
 								var thisView = this;
 								var thisModel = thisView.model;
+								thisModel.set("concept",thisModel.get("concept").replace(/_/g, " "));
 								var h = _.clone(thisModel.toJSON());
 								
 								thisView.$el.html(thisView.template(h));
