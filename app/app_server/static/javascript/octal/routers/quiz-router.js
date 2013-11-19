@@ -8,13 +8,13 @@ define(["backbone", "jquery", "octal/models/quiz-model", "octal/views/quiz-view"
 				
 				routes: {
 						"":"showError",
-						"concept/:concept": "showQuiz",
-						"about" : "showAbout"
+						"concepts/:concept": "showQuiz",
 				},
 				
 				showError: function() {
 					  console.log("you must specify a concept");
 				},
+
 
 				showQuiz: function(concept) {
             var thisRoute = this,
