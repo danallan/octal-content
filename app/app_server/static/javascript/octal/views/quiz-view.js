@@ -1,6 +1,10 @@
 
 define(["backbone", "underscore", "jquery", "octal/utils/utils"], function(Backbone, _, $, Utils){
 
+		var shuffle = function(array) {
+				for(var j, x, i = array.length; i; j = Math.floor(Math.random() * i), x = array[--i], array[i] = array[j], array[j] = x);
+				return array;
+		}
 		
 		var QuizView = (function() {
 				var pvt = {};
@@ -31,6 +35,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils"], function(Backb
 								var thisView = this;
 								var thisModel = thisView.model;
 								thisModel.set("concept",thisModel.get("concept").replace(/_/g, " "));
+								thisModel.set("a", shuffle(thisModel.get("a")));
 								var h = _.clone(thisModel.toJSON());
 								
 								thisView.$el.html(thisView.template(h));

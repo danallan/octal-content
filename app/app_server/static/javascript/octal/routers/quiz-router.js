@@ -2,13 +2,15 @@ define(["backbone", "jquery", "octal/models/quiz-model", "octal/views/quiz-view"
     var pvt = {
 				qviewId: "quiz-wrapper"
 		};
+
+	
 		return QuizRouter = Backbone.Router.extend({
         initialize: function() {
 				},
 				
 				routes: {
 						"":"showError",
-						"concepts/:concept": "showQuiz",
+						"concepts/:concept": "showQuiz"
 				},
 				
 				showError: function() {

@@ -5,7 +5,7 @@
 define(["backbone", "underscore", "octal/utils/utils"], function(Backbone, _, Utils) {
 
 		var QuestionModel = Backbone.Model.extend({
-				
+				urlRoot:"../api/questions",
 				defaults: function() {
 						return {
 								qid: "1", //question id
