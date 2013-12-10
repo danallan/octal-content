@@ -92,12 +92,12 @@ question1 = mc.Bernoulli('question1', pQuestion1, value=1, observed=True)
 
 ##################some simple tests##########
 
-model = mc.Model([primitives, operations, variables, proceduralExecution, types, variableMutation, conditionals, functions, iteration, hofs, recursion, arrays, sorting, dataStructures, aComplexity, question1]);
+model = mc.Model([primitives, pOperations, pVariables, pTypes, pConditionals, pVariableMutation, pFunctions, pIteration, pHofs, pRecursion, pArrays, pSorting, pDataStructures, pAComplexity, operations, variables, proceduralExecution, types, variableMutation, conditionals, functions, iteration, hofs, recursion, arrays, sorting, dataStructures, aComplexity, question1]);
 
 
 samples = mc.MCMC(model)
 
-samples.sample(10000)
+#samples.sample(1000)
 
 
 

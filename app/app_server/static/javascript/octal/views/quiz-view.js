@@ -10,7 +10,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils"], function(Backb
 				var pvt = {};
 				pvt.viewConsts = {
 						templateId: "quiz-view-template",
-						viewId: "quiz"
+						viewId: "quiz",
 				};
 				pvt.isRendered = false;
 				
@@ -34,13 +34,15 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils"], function(Backb
 						render: function() {
 								var thisView = this;
 								var thisModel = thisView.model;
+								var thiseView = thisView.options.appRouter.eview;
+								//var eView = thisRoute.eview;
 								thisModel.set("concept",thisModel.get("concept").replace(/_/g, " "));
 								thisModel.set("a", shuffle(thisModel.get("a")));
+								//thisModel.set("eview", thiseView.el.outerHTML);
 								var h = _.clone(thisModel.toJSON());
 								
 								thisView.$el.html(thisView.template(h));
-							  
-								
+							  thisView.$el.find('#graph-wrapper').append(thisView.options.appRouter.eview.el);
 								pvt.isRendered = true;
 								return this;
 						},
