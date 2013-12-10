@@ -17,5 +17,5 @@ def get_octal_app(request):
     else:
         concepts = {"concepts": []}
     return render_to_response("octal-app.html",
-                              {"full_graph_skeleton": get_full_graph_json_str(), "user_data": json.dumps(concepts), "user_id":request.user.id},
+                              {"full_graph_skeleton": get_full_graph_json_str(), "user_data": json.dumps(concepts), "user_id":user.id},
                               context_instance=RequestContext(request))
