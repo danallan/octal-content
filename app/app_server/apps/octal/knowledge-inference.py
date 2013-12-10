@@ -3,7 +3,7 @@ import pylab as pl;
 import numpy as np;
 #######ALL THESE PARAMETERS ARE ARBITRARY AND SHOULD BE TRAINED OR BETTER CHOSEN OR SOMETHING
 #probability of a guess
-pG = .2
+pG = .1
 #probability of a slip
 pS = .3
 #compensatory probability (p(correct | partial knowledge of reqs), extra arbitrary - should probably be contextual)
@@ -87,12 +87,18 @@ aComplexity = mc.Bernoulli('acomplexity', pAComplexity, value=1)
 ########################################################################
 
 pQuestion1 = mc.Lambda('pQuestion1', lambda types=types: pl.where(types, 1-pS, pG))
-question1 = mc.Bernoulli('question1', pQuestion1, value=1, observed=True)
+question1 = mc.Bernoulli('question1', pQuestion1, value=[1,1,1,1], observed=True)
+
+pQuestion2 = mc.Lambda('pQuestion2', lambda variableMutation=variableMutation: pl.where(variableMutation, 1-pS, pG))
+question2 = mc.Bernoulli('question2', pQuestion2, value=[1, 1, 1, 1, 1], observed=True)
+
+pQuestion3 = mc.Lambda('pQuestion3', lambda conditionals=conditionals: pl.where(conditionals, 1-pS, pG))
+question3 = mc.Bernoulli('question3', pQuestion3, value=[0,0,0,0,0], observed=True)
 
 
 ##################some simple tests##########
 
-model = mc.Model([primitives, pOperations, pVariables, pTypes, pConditionals, pVariableMutation, pFunctions, pIteration, pHofs, pRecursion, pArrays, pSorting, pDataStructures, pAComplexity, operations, variables, proceduralExecution, types, variableMutation, conditionals, functions, iteration, hofs, recursion, arrays, sorting, dataStructures, aComplexity, question1]);
+model = mc.Model([primitives, operations, variables, proceduralExecution, types, variableMutation, conditionals, functions, iteration, hofs, recursion, arrays, sorting, dataStructures, aComplexity, question1, question2, question3]);
 
 
 samples = mc.MCMC(model)

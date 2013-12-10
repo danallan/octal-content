@@ -13,6 +13,8 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 						viewId: "quiz",
 				};
 				pvt.isRendered = false;
+			  pvt.conceptName = window.location.href.split('/').pop().split('#').shift();
+
 
 				var ans = "";
 				
@@ -29,6 +31,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 
 						events: {
 								'click .submit-button': 'submit'
+						
 						},
 
 						// Re-render the title of the todo item.
@@ -57,12 +60,37 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 						submit: function() {
 							  var attempt = $("input[type='radio'][name='answer']:checked").val();
 								console.log(ans);
+								correctness = (ans ==attempt) ? 1 : 0;
 								if(ans == attempt)
 										alert('nice');
 								else
 										alert('you fucked up');
 								//get new model from the server
-								this.model = new QuestionModel({concept: window.location.href.split('/').pop().split('#').shift()});
+								this.model = new QuestionModel({concept: pvt.conceptName});
+
+								//Request to get a new question
+								$.ajax({
+										url: "http://localhost:9090/exercise/" + pvt.conceptName + "/" + agfkGlobals.userId,
+										
+								}).done(function() {
+										if ( console && console.log ) {
+												console.log( "sweet");
+										}
+								});
+
+								//request to submit an answer
+								$.ajax({
+										url: "http://localhost:9090/attempt/" + pvt.conceptName + "/" + agfkGlobals.userId + "/" + correctness,
+										type: "POST"
+										
+								}).done(function() {
+										if ( console && console.log ) {
+												console.log( "sweet");
+										}
+								});
+
+								//SOME LOGIC GOES HERE FOR HIGHLIGHTING NODES
+								
 								//rerender the view TODO: seems kinda wasteful to totally rerender the view rather than the question
 								this.render();
 						},
