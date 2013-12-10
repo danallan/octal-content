@@ -33,20 +33,24 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 
 						// Re-render the title of the todo item.
 						render: function() {
+								pvt.isRendered = false;
 								var thisView = this;
 								var thisModel = thisView.model;
 								var thiseView = thisView.options.appRouter.eview;
-								thisView.$el.empty();
-								//var eView = thisRoute.eview;
+								thisView.$el.empty(); 
 								thisModel.set("concept",thisModel.get("concept").replace(/_/g, " "));
 								ans = thisModel.get("a")[0];
 								thisModel.set("a", shuffle(thisModel.get("a")));
 								//thisModel.set("eview", thiseView.el.outerHTML);
 								var h = _.clone(thisModel.toJSON());
 								thisView.$el.html(thisView.template(h));
-							  thisView.$el.find('#graph-wrapper').append(thisView.options.appRouter.eview.el);
+								thisView.$el.find('#graph-wrapper').append(thisView.options.appRouter.eview.el);
 								pvt.isRendered = true;
+
+								
 								return this;
+																					 
+								
 						},
 
 						//If no button selected, returns undefined

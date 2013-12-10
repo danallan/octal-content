@@ -130,10 +130,12 @@ define(["backbone", "jquery", "octal/views/explore-view", "octal/views/learning-
 									 showView: function (view, doRender, selector, removeOldView) {
 											 var thisRoute = this;
 											 removeOldView = removeOldView === undefined ? true : removeOldView;
+											 
+											 var par = (thisRoute.currentView) ? thisRoute.currentView.$el.parent() : null;
 											 // helper function for async rendering views
 											 function swapViews(){
 													 if (thisRoute.currentView && removeOldView) {
-															 thisRoute.currentView.$el.parent().hide();
+															 par.hide();
 													 }
 
 													 if (doRender){
@@ -317,7 +319,7 @@ define(["backbone", "jquery", "octal/views/explore-view", "octal/views/learning-
 															 if (doRender){
 																	 thisRoute.eview = new ExploreView({model: thisRoute.graphModel, appRouter: thisRoute});
 															 }
-															 thisRoute.showView(thisRoute.eview, doRender, "#" + routeConsts.eViewId);
+															 thisRoute.showView(thisRoute.eview, true, "#" + routeConsts.eViewId);
 															 break;
 
 													 case pQuizMode:
@@ -329,7 +331,7 @@ define(["backbone", "jquery", "octal/views/explore-view", "octal/views/learning-
 																	 }
 																	 thisRoute.qview = new QuizView({model: thisRoute.questionModel, appRouter: thisRoute});
 															 }
-															 thisRoute.showView(thisRoute.qview, doRender, "#" + routeConsts.qViewId);
+															 thisRoute.showView(thisRoute.qview, true, "#" + routeConsts.qViewId);
 															 break;
 
 													 default:
