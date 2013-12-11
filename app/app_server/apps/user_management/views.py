@@ -19,6 +19,8 @@ from django.views.decorators.csrf import csrf_exempt
 from apps.cserver_comm.cserver_communicator import get_id_to_concept_dict
 from aux_text import HTML_ACCT_EMAIL, TXT_ACCT_EMAIL
 
+from apps.octal.knowledgeInference import performInference
+
 
 def user_main(request):
     if not request.user.is_authenticated() or is_lazy_user(request.user):
@@ -175,7 +177,8 @@ def handle_knowledge_request(request, conceptID=""):
     if request.method == "GET":
         uprof, created = Profile.objects.get_or_create(pk=request.user.pk)
         ex = ExerciseAttempts.objects.filter(uprofile=uprof).filter(submitted=True)
-        #TODO: knowledge inference   
-        return HttpResponse(json.dumps(['dummy']), mimetype='application/json')    
+        r = [e.get_correctness() for e in ex.all()]
+        inferences = performInference(r)
+        return HttpResponse(json.dumps(inferences), mimetype='application/json')
     else:
         return HttpResponse(status=405)
