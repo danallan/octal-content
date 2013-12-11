@@ -16,6 +16,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 						unknownColor: "#FA3333"
 				};
 				pvt.isRendered = false;
+
 			  pvt.conceptName = window.location.href.split('/').pop().split('#').shift();
 
 
@@ -73,7 +74,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 							  var attempt = $("input[type='radio'][name='answer']:checked").val();
 								console.log(ans);
 								var correctness = (ans==attempt) ? 1 : 0;
-
+								var sid = agfkGlobals.auxModel.get('nodes').get(pvt.conceptName).get('sid');
 								var aid = thisView.model.get('aid');
 								console.log(aid);
 
@@ -83,7 +84,6 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 										alert('you fucked up');
 								
 								//get new model from the server
-                var sid = agfkGlobals.auxModel.get('nodes').get(pvt.conceptName).get('sid');
 								//request to submit an answer
 
 								$.ajax({
@@ -106,24 +106,32 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 								});
 
 								console.log(thisView.model.get("aid"));
-								//$.ajax({
-									//	url: "httpL//localhost:8080/user/knowledge/" + sid,
-
-								//});
+								
 
 								//SOME LOGIC GOES HERE FOR HIGHLIGHTING NODES
 								//rerender the view TODO: seems kinda wasteful to totally rerender the view rather than the question
 								this.render();
 						},
 						highlightNodes: function(knownConcepts) {
-								//mega-ghetto
-								this.$el.find('ellipse').css('fill',pvt.viewConsts.neutralColor);
-								//for (var i = 0; i < unknownConcepts.length; i++) {
-									//	this.$el.find("#"  + unknownConcepts[i]).find('ellipse').css('fill', pvt.viewConsts.unknownColor);
-								//}
-								for (var i = 0; i < knownConcepts.length; i++) {
-										this.$el.find("#"  + knownConcepts[i]).find('ellipse').css('fill', pvt.viewConsts.knownColor);
-								}
+								thisView = this;
+								var sid = agfkGlobals.auxModel.get('nodes').get(pvt.conceptName).get('sid');
+
+								$.ajax({
+									url: "http://localhost:8080/user/knowledge/" + sid,
+
+								}).done(function(data) {
+										//thisView.highlightNodes(data);
+										console.log(data)
+										//mega-ghetto
+										thisView.$el.find('ellipse').css('fill',pvt.viewConsts.neutralColor);
+										//for (var i = 0; i < unknownConcepts.length; i++) {
+										//	this.$el.find("#"  + unknownConcepts[i]).find('ellipse').css('fill', pvt.viewConsts.unknownColor);
+										//}
+										for (var i = 0; i < knownConcepts.length; i++) {
+												thisView.$el.find("#"  + knownConcepts[i]).find('ellipse').css('fill', pvt.viewConsts.knownColor);
+										}
+								});
+								
 						},
 						edit: function() {
 								
