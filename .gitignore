@@ -6,3 +6,4 @@
 \.#*
 *~
 app/app_server/settings_local.py
+app/config.py
