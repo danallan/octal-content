@@ -5,13 +5,16 @@ from django.shortcuts import render_to_response, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render
-from apps.user_management.models import Concepts, Profile, UserCreateForm
+from apps.user_management.models import Concepts, Profile, UserCreateForm, ExerciseAttempts, ExerciseConcepts
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth import authenticate, login
 
 from lazysignup.decorators import allow_lazy_user
 from lazysignup.templatetags.lazysignup_tags import is_lazy_user
 from lazysignup.models import LazyUser
+
+#TODO remove me
+from django.views.decorators.csrf import csrf_exempt
 
 from apps.cserver_comm.cserver_communicator import get_id_to_concept_dict
 from aux_text import HTML_ACCT_EMAIL, TXT_ACCT_EMAIL
@@ -116,5 +119,63 @@ def handle_concepts(request, conceptId=""):
 
         return HttpResponse()
 
+    else:
+        return HttpResponse(status=405)
+
+@allow_lazy_user
+def handle_exercise_request(request, conceptId=""):
+    uprof, pcreated = Profile.objects.get_or_create(pk=request.user.pk)
+    excpt, ccreated = ExerciseConcepts.objects.get_or_create(conceptId=conceptId)
+
+    qid = 0
+
+    try:
+        # try to recycle an unused attempt id
+        ex = ExerciseAttempts.objects.filter(uprofile=uprof).filter(exercise=qid).get(submitted=False)
+    except ExerciseAttempts.DoesNotExist:
+        ex = ExerciseAttempts(uprofile=uprof, exercise=qid, concept=excpt)
+        ex.save()
+
+    q = {
+            'qid': qid,
+            'h': '<p>Given the function definition:</p> <p style="text-align:center"><strong><em>f(N) = f(N -1) + f(N - 2)</em></strong></p><p>and an implementation not making use of memoization, what is the most likely asymptotic runtime as a function of N?</p>',
+            't': 1, 
+            'a': ["O(2^N)","O(N)","O(1)","O(N^2)"],
+            'aid': ex.pk,
+        }
+
+    return HttpResponse(json.dumps(q), mimetype='application/json')
+
+@allow_lazy_user
+@csrf_exempt #TODO remove me
+def handle_exercise_attempt(request, attempt="", correct=""):
+    #def handle_exercise_attempt(request, concept="", exercise="", attempt="", correct=""):
+    uprof, created = Profile.objects.get_or_create(pk=request.user.pk)
+    try:
+        # only inject attempts if we have not submitted for this attempt
+        ex = ExerciseAttempts.objects.filter(uprofile=uprof).filter(submitted=False).get(pk=attempt)
+    except ExerciseAttempts.DoesNotExist, ExerciseAttempts.MultipleObjectsReturned:
+        ex = None
+
+    if request.method == "GET":
+        return HttpResponse(ex)
+    elif request.method == "PUT":
+        # only accept data if we were waiting for it
+        if ex is None:
+            return HttpResponse(status=401)
+        ex.correct = True if int(correct) is 1 else False
+        ex.submitted = True
+        ex.save()    
+        return HttpResponse()
+    else:
+        return HttpResponse(status=405)
+
+@allow_lazy_user
+def handle_knowledge_request(request, conceptID=""):
+    if request.method == "GET":
+        uprof, created = Profile.objects.get_or_create(pk=request.user.pk)
+        ex = ExerciseAttempts.objects.filter(uprofile=uprof).filter(submitted=True)
+        #TODO: knowledge inference   
+        return HttpResponse(json.dumps(['dummy']), mimetype='application/json')    
     else:
         return HttpResponse(status=405)

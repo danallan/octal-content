@@ -83,4 +83,39 @@ class StarredConcept(models.Model):
             id_concept_dict = get_id_to_concept_dict()
             self.title = id_concept_dict[self.id]['title']
         return self.title
-    
+
+class ExerciseConcepts(models.Model):
+    """
+    Skeleton to factor out concepts from exercise attempts
+    """
+    conceptId = models.CharField(max_length=10, unique=True)
+
+    def __unicode__(self):
+        return self.get_title()
+
+    def get_title(self):
+        if not hasattr(self, 'title'):
+            id_concept_dict = get_id_to_concept_dict()
+            self.title = id_concept_dict[self.conceptId]['title']
+        return self.title
+
+class ExerciseAttempts(models.Model):
+    """
+    Store exercise attempts for every user
+    """
+    uprofile  = models.ForeignKey(Profile)
+    concept   = models.ForeignKey(ExerciseConcepts)
+    exercise  = models.PositiveIntegerField()
+    correct   = models.BooleanField()
+    timestamp = models.DateTimeField(auto_now=True)
+    submitted = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        if self.submitted is True:
+            return u'%s %i SUBMITTED %i' % (self.uprofile, self.exercise, self.correct)
+        return u'%s %i NOT SUBMITTED' % (self.uprofile, self.exercise)
+
+    def get_correctness(self):
+        if self.submitted is True:
+            return (self.concept.get_title(), self.correct)
+        return None
