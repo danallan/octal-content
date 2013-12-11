@@ -94,6 +94,7 @@ class ExerciseConcepts(models.Model):
         return self.get_title()
 
     def get_title(self):
+        return 'algorithmic_complexity' #TODO remove
         if not hasattr(self, 'title'):
             id_concept_dict = get_id_to_concept_dict()
             self.title = id_concept_dict[self.conceptId]['title']
