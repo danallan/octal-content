@@ -43,7 +43,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 								pvt.isRendered = false;
 								var thisView = this;
 								var thisModel = thisView.model;
-								var thiseView = thisView.options.appRouter.eview;
+								//var thiseView = thisView.options.appRouter.eview;
 
 
 								thisView.$el.empty(); 
@@ -51,7 +51,6 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 								ans = thisModel.get("a")[0];
 								thisModel.set("a", shuffle(thisModel.get("a")));
 								var h = _.clone(thisModel.toJSON());
-
 
 								thisView.$el.html(thisView.template(h));
 								//add graph view as subview to quiz view.  view.
@@ -117,7 +116,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 								var sid = agfkGlobals.auxModel.get('nodes').get(pvt.conceptName).get('sid');
 
 								$.ajax({
-									url: "http://localhost:8080/user/knowledge/" + sid,
+									url: "/user/knowledge/" + sid,
 
 								}).done(function(data) {
 										//thisView.highlightNodes(data);
