@@ -126,6 +126,11 @@ def handle_concepts(request, conceptId=""):
 
 @allow_lazy_user
 def handle_exercise_request(request, conceptId=""):
+    #does the requested concept exist?
+    concept_dict = get_id_to_concept_dict()
+    if conceptId not in concept_dict: 
+        return HttpResponse(status=422)
+
     uprof, pcreated = Profile.objects.get_or_create(pk=request.user.pk)
     excpt, ccreated = ExerciseConcepts.objects.get_or_create(conceptId=conceptId)
 
