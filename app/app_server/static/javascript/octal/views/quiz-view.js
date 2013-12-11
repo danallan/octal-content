@@ -43,16 +43,24 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 								var thisView = this;
 								var thisModel = thisView.model;
 								var thiseView = thisView.options.appRouter.eview;
+
+
 								thisView.$el.empty(); 
 								thisModel.set("concept",thisModel.get("concept").replace(/_/g, " "));
 								ans = thisModel.get("a")[0];
 								thisModel.set("a", shuffle(thisModel.get("a")));
-								//thisModel.set("eview", thiseView.el.outerHTML);
 								var h = _.clone(thisModel.toJSON());
+
+
 								thisView.$el.html(thisView.template(h));
+								//add graph view as subview to quiz view.  view.
 								thisView.$el.find('#graph-wrapper').append(thisView.options.appRouter.eview.el);
+								//set border thicker on current node
+								thisView.$el.find("#"+ pvt.conceptName).find('ellipse').css('stroke-width',7)
+
+
 								pvt.isRendered = true;
-								this.highlightNodes(["algorithmic_complexity"], ['iteration', 'functions', 'sorting', 'arrays', 'higher_order_functions', 'recursion']);
+								this.highlightNodes(['iteration', 'functions', 'sorting', 'arrays', 'higher_order_functions', 'recursion']);
 								
 								return this;
 																					 
@@ -101,12 +109,12 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 								//rerender the view TODO: seems kinda wasteful to totally rerender the view rather than the question
 								this.render();
 						},
-						highlightNodes: function(unknownConcepts, knownConcepts) {
+						highlightNodes: function(knownConcepts) {
 								//mega-ghetto
 								this.$el.find('ellipse').css('fill',pvt.viewConsts.neutralColor);
-								for (var i = 0; i < unknownConcepts.length; i++) {
-										this.$el.find("#"  + unknownConcepts[i]).find('ellipse').css('fill', pvt.viewConsts.unknownColor);
-								}
+								//for (var i = 0; i < unknownConcepts.length; i++) {
+									//	this.$el.find("#"  + unknownConcepts[i]).find('ellipse').css('fill', pvt.viewConsts.unknownColor);
+								//}
 								for (var i = 0; i < knownConcepts.length; i++) {
 										this.$el.find("#"  + knownConcepts[i]).find('ellipse').css('fill', pvt.viewConsts.knownColor);
 								}

@@ -3,7 +3,7 @@ import pylab as pl;
 import numpy as np;
 #######ALL THESE PARAMETERS ARE ARBITRARY AND SHOULD BE TRAINED OR BETTER CHOSEN OR SOMETHING
 #probability of a guess
-pG = .1
+pG = .2
 #probability of a slip
 pS = .3
 #compensatory probability (p(correct | partial knowledge of reqs), extra arbitrary - should probably be contextual)
@@ -94,8 +94,8 @@ def performInference(responses):
     pQuestion3 = mc.Lambda('pQuestion3', lambda recursion=recursion: pl.where(recursion, 1-pS, pG))
     question3 = mc.Bernoulli('question3', pQuestion3, value=[1,1,1,1,1], observed=True)
 
-    pQuestion4 = mc.Lambda('pQuestion4', lambda iteration=iteration: pl.where(iteration, 1-pS, pG))
-    question4 = mc.Bernoulli('question4', pQuestion4, value=[1,1,1,1,1], observed=True)
+    pQuestion4 = mc.Lambda('pQuestion4', lambda dataStructures=dataStructures: pl.where(dataStructures, 1-pS, pG))
+    question4 = mc.Bernoulli('question4', pQuestion4, value=1, observed=True)
 
     pQuestion5 = mc.Lambda('pQuestion5', lambda conditionals=conditionals: pl.where(conditionals, 1-pS, pG))
     question5 = mc.Bernoulli('question5', pQuestion5, value=1, observed=True)
@@ -103,8 +103,8 @@ def performInference(responses):
     pQuestion6 = mc.Lambda('pQuestion6', lambda arrays=arrays: pl.where(arrays, 1-pS, pG))
     question6 = mc.Bernoulli('question6', pQuestion6, value=[1,1,1], observed=True)
 
-    #pQuestion7 = mc.Lambda('pQuestion7', lambda aComplexity=aComplexity: pl.where(aComplexity, 1-pS, pG))
-    #question7 = mc.Bernoulli('question7', pQuestion7, value=0, observed=True)
+    pQuestion7 = mc.Lambda('pQuestion7', lambda aComplexity=aComplexity: pl.where(aComplexity, 1-pS, pG))
+    question7 = mc.Bernoulli('question7', pQuestion7, value=[0], observed=True)
     
     
     
@@ -114,16 +114,13 @@ def performInference(responses):
     
     
     samples = mc.MCMC(model)
-    unknownNodes = [];
     knownNodes = [];
     samples.sample(1000)
 
     for concept in concepts:
-        if concept.trace().mean() < 0.4:
-            unknownNodes.append(concept)
-        elif concept.trace().mean() > 0.85:
+        if concept.trace().mean() > 0.75:
             knownNodes.append(concept)
-    return [unknownNodes, knownNodes, concepts]
+    return knownNodes
 
 #this needs tweaking till it works  Try constructing the pl.where structure instead maybe?
 #def buildDependencies(dependencies, name, idealP, nonIdealP, compensatoryP):
