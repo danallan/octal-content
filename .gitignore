@@ -1,0 +1,10 @@
+*.DS_Store
+*.swp
+*.pyc
+*config.py
+\#*
+\.#*
+*~
+app/app_server/settings_local.py
+app/config.py
+app/local_dbs
