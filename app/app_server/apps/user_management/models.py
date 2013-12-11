@@ -91,14 +91,13 @@ class ExerciseConcepts(models.Model):
     conceptId = models.CharField(max_length=10, unique=True)
 
     def __unicode__(self):
-        return self.get_title()
+        return self.get_tag()
 
-    def get_title(self):
-        return 'algorithmic_complexity' #TODO remove
-        if not hasattr(self, 'title'):
+    def get_tag(self):
+        if not hasattr(self, 'tag'):
             id_concept_dict = get_id_to_concept_dict()
-            self.title = id_concept_dict[self.conceptId]['title']
-        return self.title
+            self.tag = id_concept_dict[self.conceptId]['tag'].encode('ascii')
+        return self.tag
 
 class ExerciseAttempts(models.Model):
     """
@@ -118,5 +117,5 @@ class ExerciseAttempts(models.Model):
 
     def get_correctness(self):
         if self.submitted is True:
-            return (self.concept.get_title(), self.correct)
+            return (self.concept.get_tag(), self.correct)
         return None
