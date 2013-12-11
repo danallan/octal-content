@@ -140,9 +140,9 @@ def handle_exercise_request(request, conceptId=""):
 
     q = {
             'qid': qid,
-            'h': '<p>Given the function definition:</p> <p style="text-align:center"><strong><em>f(N) = f(N -1) + f(N - 2)</em></strong></p><p>and an implementation not making use of memoization, what is the most likely asymptotic runtime as a function of N?</p>',
+            'h': '<p>question text goes here</p>',
             't': 1, 
-            'a': ["O(2^N)","O(N)","O(1)","O(N^2)"],
+            'a': ["correct answer","ans2","ans3","ans4"],
             'aid': ex.pk,
         }
 
