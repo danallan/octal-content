@@ -18,7 +18,7 @@ urlpatterns = patterns('',
                            password_reset_confirm, {'template_name': 'user_management/password_reset_confirm.html',
                                                     'post_reset_redirect': '/user/password_reset/success'}, name="password_reset_confirm"),
                        url(r'^password_reset/success$', password_reset_done, {'template_name': 'user_management/password_reset_done.html'}, name='password_reset_done'),
-                       url(r'^concepts/([^/]*)$', views.handle_concepts, name='addlearned')
+                       url(r'^concepts/([^/]*)$', views.handle_concepts, name='addlearned'),
 		       url(r'^exercise/([^/]*)$', views.handle_exercise_request, name='getexercise'),
 		       url(r'^attempt/(?P<attempt>[^/]*)/(?P<correct>[01])$', views.handle_exercise_attempt, name='addattempt'),
 		       url(r'^knowledge/([^/]*)$', views.handle_knowledge_request, name='getknowledge'),
