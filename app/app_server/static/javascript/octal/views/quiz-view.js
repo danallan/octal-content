@@ -11,6 +11,9 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 				pvt.viewConsts = {
 						templateId: "quiz-view-template",
 						viewId: "quiz",
+						knownColor: '#A1FFB8',
+						neutralColor: "#F6FBFF",
+						unknownColor: "#FA3333"
 				};
 				pvt.isRendered = false;
 			  pvt.conceptName = window.location.href.split('/').pop().split('#').shift();
@@ -49,7 +52,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 								thisView.$el.html(thisView.template(h));
 								thisView.$el.find('#graph-wrapper').append(thisView.options.appRouter.eview.el);
 								pvt.isRendered = true;
-
+								this.highlightNodes(["algorithmic_complexity"], ['iteration', 'functions', 'sorting', 'arrays', 'higher_order_functions', 'recursion']);
 								
 								return this;
 																					 
@@ -67,10 +70,21 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 										alert('you fucked up');
 								//get new model from the server
 								this.model = new QuestionModel({concept: pvt.conceptName});
-
+                sid = agfkGlobals.auxModel.get('nodes').get(pvt.conceptName).get('sid');
 								//Request to get a new question
 								$.ajax({
-										url: "http://localhost:9090/exercise/" + pvt.conceptName + "/" + agfkGlobals.userId,
+										url: "http://localhost:8080/user/exercise/" + sid,
+										
+								}).done(function() {
+										if ( console && console.log ) {
+												console.log( "sweet");
+										}
+								});
+                aid = "some shit";
+								//request to submit an answer
+								$.ajax({
+										url: "http://localhost:8080/user/attempt/" + aid + "/" + correctness,
+										type: "PUT"
 										
 								}).done(function() {
 										if ( console && console.log ) {
@@ -78,25 +92,24 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 										}
 								});
 
-								//request to submit an answer
 								$.ajax({
-										url: "http://localhost:9090/attempt/" + pvt.conceptName + "/" + agfkGlobals.userId + "/" + correctness,
-										type: "POST"
-										
-								}).done(function() {
-										if ( console && console.log ) {
-												console.log( "sweet");
-										}
+										url: "httpL//localhost:8080/user/knowledge/" + sid,
+
 								});
 
 								//SOME LOGIC GOES HERE FOR HIGHLIGHTING NODES
-								
 								//rerender the view TODO: seems kinda wasteful to totally rerender the view rather than the question
 								this.render();
 						},
-						displayNextQuestion: function() {
-								var thisView = this;
-								render();
+						highlightNodes: function(unknownConcepts, knownConcepts) {
+								//mega-ghetto
+								this.$el.find('ellipse').css('fill',pvt.viewConsts.neutralColor);
+								for (var i = 0; i < unknownConcepts.length; i++) {
+										this.$el.find("#"  + unknownConcepts[i]).find('ellipse').css('fill', pvt.viewConsts.unknownColor);
+								}
+								for (var i = 0; i < knownConcepts.length; i++) {
+										this.$el.find("#"  + knownConcepts[i]).find('ellipse').css('fill', pvt.viewConsts.knownColor);
+								}
 						},
 						edit: function() {
 								
