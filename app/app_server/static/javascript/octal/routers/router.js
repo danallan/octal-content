@@ -243,7 +243,19 @@ define(["backbone", "jquery", "octal/views/explore-view", "octal/views/learning-
 											 // set view-mode (defaults to learn view)
 											 paramsObj[qViewMode] = paramsObj[qViewMode] || pLearnMode;
 											 pvt.viewMode = paramsObj[qViewMode];
+											 var getModel = function() {
+													 var model;
+													 var concept = window.location.href.split('/').pop().split('#').shift();
+													 var sid = agfkGlobals.auxModel.get('nodes').get(concept).get('sid');
 
+													 $.ajax({url: "http://localhost:8080/user/exercise/" + sid, async:false}).done(function(data) {
+															 if ( console && console.log ) {
+																	 model = new QuestionModel(data);
+																	 model.set("concept",concept);
+															 }
+													 });
+													 return model;
+											 };
 											 // // init main app model
 											 if (!thisRoute.graphModel){
 													 var aux = window.agfkGlobals.auxModel;
@@ -251,7 +263,7 @@ define(["backbone", "jquery", "octal/views/explore-view", "octal/views/learning-
 
 													 var userModel = new UserData(window.agfkGlobals.userInitData, {parse: true}),
 													 graphModel = new GraphModel(),
-													 questionModel = new QuestionModel({concept: window.location.href.split('/').pop().split('#').shift()});
+													 questionModel = getModel();
 													 aux.setUserModel(userModel);
 													 thisRoute.userModel = userModel;
 													 thisRoute.graphModel = graphModel;

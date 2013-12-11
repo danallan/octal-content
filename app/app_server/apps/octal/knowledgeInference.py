@@ -42,24 +42,24 @@ def performInference(responses):
     ###########hardcoding our graph in for some testing - fix this###############
     primitives = mc.Bernoulli('primitives', pK, value=1)
     concepts.append(primitives);
-    proceduralExecution = mc.Bernoulli('procedural_execution', pK, value=1)
-    concepts.append(proceduralExecution);
+    procedural_execution = mc.Bernoulli('procedural_execution', pK, value=1)
+    concepts.append(procedural_execution);
     pOperations = stopGapDependencies('pOperations', [primitives])
     operations = mc.Bernoulli('operations', pOperations, value=1)
     concepts.append(operations);
     pVariables = stopGapDependencies('pVariables', [operations])
     variables = mc.Bernoulli('variables', pVariables, value=1)
     concepts.append(variables);
-    pConditionals = stopGapDependencies('pConditionals', [variables, proceduralExecution])
+    pConditionals = stopGapDependencies('pConditionals', [variables, procedural_execution])
     conditionals = mc.Bernoulli('conditionals', pConditionals, value=1)
     concepts.append(conditionals);
     pVariableMutation = stopGapDependencies('pVariableMutation',[variables])
-    variableMutation = mc.Bernoulli('variable_mutation', pVariableMutation, value=1)
-    concepts.append(variableMutation);
+    variable_mutation = mc.Bernoulli('variable_mutation', pVariableMutation, value=1)
+    concepts.append(variable_mutation);
     pTypes = stopGapDependencies('pTypes', [variables])
     types = mc.Bernoulli('types', pTypes, value=1)
     concepts.append(types);
-    pIteration = stopGapDependencies('pIteration', [variableMutation, conditionals])
+    pIteration = stopGapDependencies('pIteration', [variable_mutation, conditionals])
     iteration = mc.Bernoulli('iteration', pIteration, value=1)
     concepts.append(iteration);
     pFunctions = stopGapDependencies('pFunctions', [types])
@@ -69,32 +69,32 @@ def performInference(responses):
     arrays = mc.Bernoulli('arrays', pArrays, value=1)
     concepts.append(arrays);
     pHofs = stopGapDependencies('pHofs', [functions])
-    hofs = mc.Bernoulli('higher_order_functions', pHofs, value=1)
-    concepts.append(hofs);
+    higher_order_functions = mc.Bernoulli('higher_order_functions', pHofs, value=1)
+    concepts.append(higher_order_functions);
     pRecursion = stopGapDependencies('pRecursion', [functions])
     recursion = mc.Bernoulli('recursion', pRecursion, value=1)
     concepts.append(recursion);
-    pSorting = stopGapDependencies('pSorting', [hofs, recursion, arrays])
+    pSorting = stopGapDependencies('pSorting', [higher_order_functions, recursion, arrays])
     sorting = mc.Bernoulli('sorting', pSorting, value=1)
     concepts.append(sorting);
     pDataStructures = stopGapDependencies('pDataStructures', [arrays])
-    dataStructures = mc.Bernoulli('data_structures', pDataStructures, value=1)
-    concepts.append(dataStructures);
-    pAComplexity = stopGapDependencies('pAComplexity', [sorting, dataStructures])
-    aComplexity = mc.Bernoulli('algorithmic_complexity', pAComplexity, value=1)
-    concepts.append(aComplexity);
+    data_structures = mc.Bernoulli('data_structures', pDataStructures, value=1)
+    concepts.append(data_structures);
+    pAComplexity = stopGapDependencies('pAComplexity', [sorting, data_structures])
+    algorithmic_complexity = mc.Bernoulli('algorithmic_complexity', pAComplexity, value=1)
+    concepts.append(algorithmic_complexity);
     ########################################################################
     
     pQuestion1 = mc.Lambda('pQuestion1', lambda sorting=sorting: pl.where(sorting, 1-pS, pG))
     question1 = mc.Bernoulli('question1', pQuestion1, value=[1,1,1,1], observed=True)
     
-    pQuestion2 = mc.Lambda('pQuestion2', lambda hofs=hofs: pl.where(hofs, 1-pS, pG))
+    pQuestion2 = mc.Lambda('pQuestion2', lambda higher_order_functions=higher_order_functions: pl.where(higher_order_functions, 1-pS, pG))
     question2 = mc.Bernoulli('question2', pQuestion2, value=[1, 1, 1, 1, 1], observed=True)
 
     pQuestion3 = mc.Lambda('pQuestion3', lambda recursion=recursion: pl.where(recursion, 1-pS, pG))
     question3 = mc.Bernoulli('question3', pQuestion3, value=[1,1,1,1,1], observed=True)
 
-    pQuestion4 = mc.Lambda('pQuestion4', lambda dataStructures=dataStructures: pl.where(dataStructures, 1-pS, pG))
+    pQuestion4 = mc.Lambda('pQuestion4', lambda data_structures=data_structures: pl.where(data_structures, 1-pS, pG))
     question4 = mc.Bernoulli('question4', pQuestion4, value=1, observed=True)
 
     pQuestion5 = mc.Lambda('pQuestion5', lambda conditionals=conditionals: pl.where(conditionals, 1-pS, pG))
@@ -103,14 +103,18 @@ def performInference(responses):
     pQuestion6 = mc.Lambda('pQuestion6', lambda arrays=arrays: pl.where(arrays, 1-pS, pG))
     question6 = mc.Bernoulli('question6', pQuestion6, value=[1,1,1], observed=True)
 
-    pQuestion7 = mc.Lambda('pQuestion7', lambda aComplexity=aComplexity: pl.where(aComplexity, 1-pS, pG))
-    question7 = mc.Bernoulli('question7', pQuestion7, value=[0], observed=True)
-    
-    
+    #pQuestion7 = mc.Lambda('pQuestion7', lambda algorithmic_complexity=algorithmic_complexity: pl.where(algorithmic_complexity, 1-pS, pG))
+    #question7 = mc.Bernoulli('question7', pQuestion7, value=[0], observed=True)
+
+    otherQuestions = [];
+    for example in responses:
+        tmp = vars()[example[0]]
+        prob = mc.Lambda("p" + example[0], lambda tmp=tmp: pl.where(tmp, 1-pS, pG))
+        otherQuestions.append(mc.Bernoulli(example[0], prob, value=example[1], observed=True))
     
     ##################some simple tests##########
     
-    model = mc.Model([primitives, operations, variables, proceduralExecution, types, variableMutation, conditionals, functions, iteration, hofs, recursion, arrays, sorting, dataStructures, aComplexity, question1, question2, question3, question4, question5, question6]);
+    model = mc.Model([primitives, operations, variables, procedural_execution, types, variable_mutation, conditionals, functions, iteration, higher_order_functions, recursion, arrays, sorting, data_structures, algorithmic_complexity, question1, question2, question3, question4, question5, question6] + otherQuestions);
     
     
     samples = mc.MCMC(model)
@@ -119,7 +123,7 @@ def performInference(responses):
 
     for concept in concepts:
         if concept.trace().mean() > 0.75:
-            knownNodes.append(concept)
+            knownNodes.append(concept.__name__)
     return knownNodes
 
 #this needs tweaking till it works  Try constructing the pl.where structure instead maybe?
@@ -140,4 +144,4 @@ def performInference(responses):
 
          
 
-x = performInference('lol')
+#x = performInference([['algorithmic_complexity',0]])

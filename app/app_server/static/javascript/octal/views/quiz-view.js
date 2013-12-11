@@ -69,41 +69,47 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 
 						//If no button selected, returns undefined
 						submit: function() {
+								var thisView = this;
 							  var attempt = $("input[type='radio'][name='answer']:checked").val();
 								console.log(ans);
-								correctness = (ans ==attempt) ? 1 : 0;
-								if(ans == attempt)
+								var correctness = (ans==attempt) ? 1 : 0;
+
+								var aid = thisView.model.get('aid');
+								console.log(aid);
+
+								if(correctness)
 										alert('nice');
 								else
 										alert('you fucked up');
+								
 								//get new model from the server
-								this.model = new QuestionModel({concept: pvt.conceptName});
-                sid = agfkGlobals.auxModel.get('nodes').get(pvt.conceptName).get('sid');
-								//Request to get a new question
-								$.ajax({
-										url: "http://localhost:8080/user/exercise/" + sid,
-										
-								}).done(function() {
-										if ( console && console.log ) {
-												console.log( "sweet");
-										}
-								});
-                aid = "some shit";
+                var sid = agfkGlobals.auxModel.get('nodes').get(pvt.conceptName).get('sid');
 								//request to submit an answer
+
 								$.ajax({
 										url: "http://localhost:8080/user/attempt/" + aid + "/" + correctness,
-										type: "PUT"
+										type: "PUT",
+										async: false
 										
-								}).done(function() {
+								})
+
+								//request to get new question
+
+								$.ajax({
+										url: "http://localhost:8080/user/exercise/" + sid,
+										async:false
+								}).done(function(data) {
 										if ( console && console.log ) {
-												console.log( "sweet");
+												thisView.model = new QuestionModel(data);
+												thisView.model.set("concept", pvt.conceptName);
 										}
 								});
 
-								$.ajax({
-										url: "httpL//localhost:8080/user/knowledge/" + sid,
+								console.log(thisView.model.get("aid"));
+								//$.ajax({
+									//	url: "httpL//localhost:8080/user/knowledge/" + sid,
 
-								});
+								//});
 
 								//SOME LOGIC GOES HERE FOR HIGHLIGHTING NODES
 								//rerender the view TODO: seems kinda wasteful to totally rerender the view rather than the question
