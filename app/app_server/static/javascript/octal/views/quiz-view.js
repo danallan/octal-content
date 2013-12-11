@@ -87,7 +87,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 								//request to submit an answer
 
 								$.ajax({
-										url: "http://localhost:8080/user/attempt/" + aid + "/" + correctness,
+										url: "/user/attempt/" + aid + "/" + correctness,
 										type: "PUT",
 										async: false
 										
@@ -96,7 +96,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 								//request to get new question
 
 								$.ajax({
-										url: "http://localhost:8080/user/exercise/" + sid,
+										url: "/user/exercise/" + sid,
 										async:false
 								}).done(function(data) {
 										if ( console && console.log ) {
