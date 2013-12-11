@@ -61,7 +61,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 
 
 								pvt.isRendered = true;
-								this.highlightNodes(['iteration', 'functions', 'sorting', 'arrays', 'higher_order_functions', 'recursion']);
+								this.highlightNodes();
 								
 								return this;
 																					 
@@ -79,9 +79,9 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 								console.log(aid);
 
 								if(correctness)
-										alert('nice');
+										alert('correct');
 								else
-										alert('you fucked up');
+										alert('incorrect');
 								
 								//get new model from the server
 								//request to submit an answer
@@ -112,7 +112,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 								//rerender the view TODO: seems kinda wasteful to totally rerender the view rather than the question
 								this.render();
 						},
-						highlightNodes: function(knownConcepts) {
+						highlightNodes: function() {
 								thisView = this;
 								var sid = agfkGlobals.auxModel.get('nodes').get(pvt.conceptName).get('sid');
 
@@ -127,8 +127,8 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 										//for (var i = 0; i < unknownConcepts.length; i++) {
 										//	this.$el.find("#"  + unknownConcepts[i]).find('ellipse').css('fill', pvt.viewConsts.unknownColor);
 										//}
-										for (var i = 0; i < knownConcepts.length; i++) {
-												thisView.$el.find("#"  + knownConcepts[i]).find('ellipse').css('fill', pvt.viewConsts.knownColor);
+										for (var i = 0; i < data.length; i++) {
+												thisView.$el.find("#"  + data[i]).find('ellipse').css('fill', pvt.viewConsts.knownColor);
 										}
 								});
 								
