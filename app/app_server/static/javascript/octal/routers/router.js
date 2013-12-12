@@ -248,7 +248,7 @@ define(["backbone", "jquery", "octal/views/explore-view", "octal/views/learning-
 													 var concept = window.location.href.split('/').pop().split('#').shift();
 													 var sid = agfkGlobals.auxModel.get('nodes').get(concept).get('sid');
 
-													 $.ajax({url: "/user/exercise/" + sid, async:false}).done(function(data) {
+													 $.ajax({url: "/octal/exercise/" + sid, async:false}).done(function(data) {
 															 if ( console && console.log ) {
 																	 model = new QuestionModel(data);
 																	 model.set("concept",concept);

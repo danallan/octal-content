@@ -86,7 +86,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 								//request to submit an answer
 
 								$.ajax({
-										url: "/user/attempt/" + aid + "/" + correctness,
+										url: "/octal/attempt/" + aid + "/" + correctness,
 										type: "PUT",
 										async: false
 										
@@ -95,7 +95,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 								//request to get new question
 
 								$.ajax({
-										url: "/user/exercise/" + sid,
+										url: "/octal/exercise/" + sid,
 										async:false
 								}).done(function(data) {
 										if ( console && console.log ) {
@@ -116,7 +116,7 @@ define(["backbone", "underscore", "jquery", "octal/utils/utils", "octal/models/q
 								var sid = agfkGlobals.auxModel.get('nodes').get(pvt.conceptName).get('sid');
 
 								$.ajax({
-									url: "/user/knowledge/" + sid,
+									url: "/octal/knowledge/" + sid,
 
 								}).done(function(data) {
 										//thisView.highlightNodes(data);
