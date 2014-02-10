@@ -18,8 +18,19 @@ pU = .1 #p(Understanding)
 pM = .05 #p(Magic)
 
 
+def calculateProbability(name, dependencies, weights=0):
+    #given that no specific weights are specified
+    if weights == 0:
+        weights = [1]*len(dependencies)
+    assert len(weights) == len(dependencies)
+    #get the current values of the dependencies
+    return mc.Lambda(name, lambda dependencies=dependencies, weights=weights: (pK - pM) * sum(pl.multiply(dependencies,weights))/sum(weights) + pM)
+        
+
 def performInference(responses):
     #this is a really hacky solution for now until I can spend more time figuring out how to do this more programatically 
+    
+'''
     def stopGapDependencies(name, dependencies):
         p = 0;
         if len(dependencies) == 1:
@@ -40,49 +51,50 @@ def performInference(responses):
         else:
             print "This is hacky and doesnt work for nodes with more than 3 dependencies"
         return p
+'''
     concepts = [];        
     ###########hardcoding our graph in for some testing - fix this###############
     primitives = mc.Bernoulli('primitives', pK, value=1)
     concepts.append(primitives);
     procedural_execution = mc.Bernoulli('procedural_execution', pK, value=1)
     concepts.append(procedural_execution);
-    pOperations = stopGapDependencies('pOperations', [primitives])
+    pOperations = calculateProbability('pOperations', [primitives])
     operations = mc.Bernoulli('operations', pOperations, value=1)
     concepts.append(operations);
-    pVariables = stopGapDependencies('pVariables', [operations])
+    pVariables = calculateProbability('pVariables', [operations])
     variables = mc.Bernoulli('variables', pVariables, value=1)
     concepts.append(variables);
-    pConditionals = stopGapDependencies('pConditionals', [variables, procedural_execution])
+    pConditionals = calculateProbability('pConditionals', [variables, procedural_execution])
     conditionals = mc.Bernoulli('conditionals', pConditionals, value=1)
     concepts.append(conditionals);
-    pVariableMutation = stopGapDependencies('pVariableMutation',[variables])
+    pVariableMutation = calculateProbability('pVariableMutation',[variables])
     variable_mutation = mc.Bernoulli('variable_mutation', pVariableMutation, value=1)
     concepts.append(variable_mutation);
-    pTypes = stopGapDependencies('pTypes', [variables])
+    pTypes = calculateProbability('pTypes', [variables])
     types = mc.Bernoulli('types', pTypes, value=1)
     concepts.append(types);
-    pIteration = stopGapDependencies('pIteration', [variable_mutation, conditionals])
+    pIteration = calculateProbability('pIteration', [variable_mutation, conditionals])
     iteration = mc.Bernoulli('iteration', pIteration, value=1)
     concepts.append(iteration);
-    pFunctions = stopGapDependencies('pFunctions', [types])
+    pFunctions = calculateProbability('pFunctions', [types])
     functions = mc.Bernoulli('functions', pFunctions, value=1)
     concepts.append(functions);
-    pArrays = stopGapDependencies('pArrays', [iteration])
+    pArrays = calculateProbability('pArrays', [iteration])
     arrays = mc.Bernoulli('arrays', pArrays, value=1)
     concepts.append(arrays);
-    pHofs = stopGapDependencies('pHofs', [functions])
+    pHofs = calculateProbability('pHofs', [functions])
     higher_order_functions = mc.Bernoulli('higher_order_functions', pHofs, value=1)
     concepts.append(higher_order_functions);
-    pRecursion = stopGapDependencies('pRecursion', [functions])
+    pRecursion = calculateProbability('pRecursion', [functions])
     recursion = mc.Bernoulli('recursion', pRecursion, value=1)
     concepts.append(recursion);
-    pSorting = stopGapDependencies('pSorting', [higher_order_functions, recursion, arrays])
+    pSorting = calculateProbability('pSorting', [higher_order_functions, recursion, arrays])
     sorting = mc.Bernoulli('sorting', pSorting, value=1)
     concepts.append(sorting);
-    pDataStructures = stopGapDependencies('pDataStructures', [arrays])
+    pDataStructures = calculateProbability('pDataStructures', [arrays])
     data_structures = mc.Bernoulli('data_structures', pDataStructures, value=1)
     concepts.append(data_structures);
-    pAComplexity = stopGapDependencies('pAComplexity', [sorting, data_structures])
+    pAComplexity = calculateProbability('pAComplexity', [sorting, data_structures])
     algorithmic_complexity = mc.Bernoulli('algorithmic_complexity', pAComplexity, value=1)
     concepts.append(algorithmic_complexity);
     ########################################################################
