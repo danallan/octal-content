@@ -8,12 +8,8 @@ import numpy as np;
 pG = .2
 #probability of a slip
 pS = .3
-#compensatory probability (p(correct | partial knowledge of reqs), extra arbitrary - should probably be contextual)
-pC = .4
 #basic probability a student already knows a concept given we know they know all the prereqs.  Coinflip?  
 pK = .5 #p(Knowledge)
-#probability a student knows a concept given they miss knowledge on one or more prereqs
-pU = .1 #p(Understanding)
 #probability a student knows a concept given that they DON'T know ANY of the prereq(s)
 pM = .05 #p(Magic)
 
@@ -29,29 +25,7 @@ def calculateProbability(name, dependencies, weights=0):
 
 def performInference(responses):
     #this is a really hacky solution for now until I can spend more time figuring out how to do this more programatically 
-    
-'''
-    def stopGapDependencies(name, dependencies):
-        p = 0;
-        if len(dependencies) == 1:
-            dep = dependencies[0]
-            #for reference, the semantics of this are if dep=1, p=pK, else if dep=0, p=pM
-            p = mc.Lambda(name, lambda dep=dep: pl.where(dep, pK, pM))
-        elif len(dependencies) == 2:
-            dep = dependencies[0]
-            dep2 = dependencies[1]
-            p = mc.Lambda(name, lambda dep=dep, dep2=dep2: pl.where(dep2, pl.where(dep, pK, pU), pl.where(dep, pU, pM)))
-        elif len(dependencies) == 3:
-            dep = dependencies[0]
-            dep2 = dependencies[1]
-            dep3 = dependencies[2]
-            p = (mc.Lambda(name, lambda dep=dep, dep2=dep2, dep3=dep3: pl.where(dep3, pl.where(dep2, pl.where(dep, pK, pU),
-                                                                                               pl.where(dep, pU, pU/2)), pl.where(dep2, pl.where(dep, pU, pU/2),
-                                                                                                                                  pl.where(dep, pU/2, pM)))))
-        else:
-            print "This is hacky and doesnt work for nodes with more than 3 dependencies"
-        return p
-'''
+
     concepts = [];        
     ###########hardcoding our graph in for some testing - fix this###############
     primitives = mc.Bernoulli('primitives', pK, value=1)
